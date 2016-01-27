@@ -27,7 +27,7 @@ function template (body, people, done) {
 function getPeople(people) {
 
   var processedPeople = _.map(people, function(person){
-    var zone = person.tz || "Europe/London";
+    var zone = person.tz || "Europe/Berlin";
     var name = person.real_name || person.name;
     return {
       "name": name,
