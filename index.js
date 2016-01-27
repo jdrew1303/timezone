@@ -30,7 +30,7 @@ function getPeople() {
       "avatar": person.profile.image_192,
       "city": person.tz,
       "tz": person.tz
-    },
+    }
   })
 }
 
