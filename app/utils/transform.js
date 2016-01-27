@@ -6,6 +6,7 @@ function appendTime(time, person) {
 }
 
 function sortByTimezone(a, b){
+  console.log(a, "     ",b);
   return a.time.utcOffset() - b.time.utcOffset();
 }
 

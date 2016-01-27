@@ -24,14 +24,17 @@ function template (body, done) {
 }
 
 function getPeople() {
-  return people.map(function(person){
+  var processedPeople = people.map(function(person){
+    var zone = person.tz ? person.tz : "Europe/London";
     return {
       "name": person.real_name,
       "avatar": person.profile.image_192,
-      "city": person.tz | "Europe/London",
-      "tz": person.tz | "Europe/London"
+      "city": zone,
+      "tz": zone
     }
-  })
+  });
+  console.log(JSON.stringify(processedPeople, null, 4));
+  return processedPeople;
 }
 
 app.use(logger('common'));
