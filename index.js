@@ -19,7 +19,7 @@ function template (body, done) {
     if (err) done(err);
     done(null, layout
                 .replace('{{{body}}}', body)
-                .replace('{{{people}}}', JSON.stringify(people)));
+                .replace('{{{people}}}', JSON.stringify(getPeople())));
   });
 }
 
