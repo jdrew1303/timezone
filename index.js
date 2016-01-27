@@ -28,8 +28,8 @@ function getPeople() {
     return {
       "name": person.real_name,
       "avatar": person.profile.image_192,
-      "city": person.tz,
-      "tz": person.tz
+      "city": person.tz | "Europe/London",
+      "tz": person.tz | "Europe/London"
     }
   })
 }
