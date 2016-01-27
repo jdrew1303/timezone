@@ -24,7 +24,7 @@ function template (body, done) {
 }
 
 function getPeople() {
-  people.map(function(person){
+  return people.map(function(person){
     return {
       "name": person.real_name,
       "avatar": person.profile.image_192,
