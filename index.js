@@ -7,7 +7,7 @@ var React = require('react');
 var moment = require('moment-timezone');
 var fs = require('fs');
 
-var people = require('./people.json');
+var people = require('./people.json').members;
 var transform = require('./app/utils/transform.js');
 
 // Allow direct requiring of .jsx files
@@ -21,6 +21,17 @@ function template (body, done) {
                 .replace('{{{body}}}', body)
                 .replace('{{{people}}}', JSON.stringify(people)));
   });
+}
+
+function getPeople() {
+  people.map(function(person){
+    return {
+      "name": person.real_name,
+      "avatar": person.profile.image_192,
+      "city": person.tz,
+      "tz": person.tz
+    },
+  })
 }
 
 app.use(logger('common'));
