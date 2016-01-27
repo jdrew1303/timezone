@@ -6,34 +6,36 @@ var autoprefixer  = require('autoprefixer-stylus');
 var React = require('react');
 var moment = require('moment-timezone');
 var fs = require('fs');
+var request = require('request');
+var _ = require('lodash');
 
-var people = require('./people.json').members;
 var transform = require('./app/utils/transform.js');
 
 // Allow direct requiring of .jsx files
 require('node-jsx').install({extension: '.jsx'});
 
 // Should switch this out for proper Handlebars usage
-function template (body, done) {
+function template (body, people, done) {
   fs.readFile('./app/views/layout.hbs', 'utf8', function (err, layout) {
     if (err) done(err);
     done(null, layout
                 .replace('{{{body}}}', body)
-                .replace('{{{people}}}', JSON.stringify(getPeople())));
+                .replace('{{{people}}}', JSON.stringify(getPeople(people))));
   });
 }
 
-function getPeople() {
-  var processedPeople = people.map(function(person){
-    var zone = person.tz ? person.tz : "Europe/London";
+function getPeople(people) {
+
+  var processedPeople = _.map(people, function(person){
+    var zone = person.tz || "Europe/London";
+    var name = person.real_name || person.name;
     return {
-      "name": person.real_name,
+      "name": name,
       "avatar": person.profile.image_192,
       "city": zone,
       "tz": zone
     }
   });
-  console.log(JSON.stringify(processedPeople, null, 4));
   return processedPeople;
 }
 
@@ -55,24 +57,30 @@ app.use(
 
 app.get('/', function(err, res){
 
-  var App = require('./app/views/app.jsx');
+  request('https://slack.com/api/users.list?token=xoxp-3858018789-18406319651-19564095191-2ddafa0e03', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
 
-  // Organize into timezones
-  var time = moment();
-  var timezones = transform(time, getPeople());
+      var people = JSON.parse(body).members;
 
-  var body = React.renderToString(
-    React.createElement(App, {
-      time: time,
-      timezones: timezones
-    })
-  );
+      var App = require('./app/views/app.jsx');
 
-  template(body, function(err, html){
-    if (err) throw err;
-    res.send(html);
-  });
+      // Organize into timezones
+      var time = moment();
+      var timezones = transform(time, getPeople(people));
 
+      var body = React.renderToString(
+        React.createElement(App, {
+          time: time,
+          timezones: timezones
+        })
+      );
+
+      template(body, people, function(err, html){
+        if (err) throw err;
+        res.send(html);
+      });
+    }
+  })
 });
 
 // Static files

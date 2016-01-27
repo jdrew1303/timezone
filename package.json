@@ -23,7 +23,9 @@
     "node-jsx": "^0.12.4",
     "react": "^0.13.1",
     "react-tools": "^0.13.1",
-    "stylus": "^0.50.0"
+    "stylus": "^0.50.0",
+    "lodash": "^4.0.1",
+    "request": "^2.67.0"
   },
   "devDependencies": {
     "reactify": "^1.1.0"
