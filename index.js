@@ -10,6 +10,7 @@ var request = require('request');
 var _ = require('lodash');
 
 var transform = require('./app/utils/transform.js');
+var API_TOKEN = process.env.SLACK_API_TOKEN;
 
 // Allow direct requiring of .jsx files
 require('node-jsx').install({extension: '.jsx'});
@@ -57,7 +58,7 @@ app.use(
 
 app.get('/', function(err, res){
 
-  request('https://slack.com/api/users.list?token=xoxp-3858018789-18406319651-19564095191-2ddafa0e03', function (error, response, body) {
+  request('https://slack.com/api/users.list?token=' + API_TOKEN, function (error, response, body) {
     if (!error && response.statusCode == 200) {
 
       var people = JSON.parse(body).members;
