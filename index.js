@@ -56,7 +56,7 @@ app.get('/', function(err, res){
 
   // Organize into timezones
   var time = moment();
-  var timezones = transform(time, people);
+  var timezones = transform(time, getPeople());
 
   var body = React.renderToString(
     React.createElement(App, {
