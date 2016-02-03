@@ -58,10 +58,10 @@ app.use(
 
 app.get('/', function(err, res){
 
-  request('https://slack.com/api/users.list?token=' + API_TOKEN, function (error, response, body) {
+  request('https://slack.com/api/users.list?token=' + API_TOKEN + '&presence=1', function (error, response, body) {
     if (!error && response.statusCode == 200) {
 
-      var people = JSON.parse(body).members;
+      var people = _.filter(JSON.parse(body).members, {"presence": "active"});
 
       var App = require('./app/views/app.jsx');
 
